@@ -1,3 +1,18 @@
+# Conectando el mundo web
+
+conectando el mundo web
+
+Axel Iparrea
+Rafael Rivas
+Eduardo Tello
+
+Para correr:
+git clone repo
+cd mundo-web
+npm i
+npm start
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
