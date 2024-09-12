@@ -10,10 +10,8 @@ function App() {
   return (
     <Router>
       <div>
-        {/* Navbar will always be visible */}
         <Navbar />
 
-        {/* Define Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pokemons" element={<Pokemons />} />

@@ -20,14 +20,13 @@ function Pokemons() {
     setModalIsOpen(false);
   };
 
-  // Fetch list of all Pokémon names
   useEffect(() => {
     const fetchPokemonList = async () => {
       try {
         const response = await axios.get(
           "https://pokeapi.co/api/v2/pokemon?limit=1000"
         );
-        setPokemonList(response.data.results); // contains list of all Pokémon
+        setPokemonList(response.data.results);
       } catch (error) {
         console.error("Error fetching Pokémon list", error);
       }
@@ -36,7 +35,6 @@ function Pokemons() {
     fetchPokemonList();
   }, []);
 
-  // Filter Pokémon by search input
   useEffect(() => {
     if (search === "") {
       setFilteredResults([]);
@@ -47,11 +45,10 @@ function Pokemons() {
       pokemon.name.toLowerCase().startsWith(search.toLowerCase())
     );
 
-    // Fetch details of filtered Pokémon to get their sprites
     const fetchPokemonDetails = async () => {
       const detailedResults = await Promise.all(
         filtered.map(async (pokemon) => {
-          const res = await axios.get(pokemon.url); // Pokémon URL has all the details
+          const res = await axios.get(pokemon.url);
           return res.data;
         })
       );
@@ -61,23 +58,20 @@ function Pokemons() {
     fetchPokemonDetails();
   }, [search, pokemonList]);
 
-  // Add a Pokémon to the team with initial shiny status
   const addToTeam = (pokemon) => {
-    if (team.length < 6 && !team.find((p) => p.id === pokemon.id)) {
+    if (team.length < 10 && !team.find((p) => p.id === pokemon.id)) {
       setTeam([...team, { ...pokemon, showShiny: false }]);
     } else {
-      alert("Your team can only have 6 Pokémon, and no duplicates!");
+      alert("Tu equipo solo puede tener 10 pokemones, y sin duplicados!");
     }
   };
 
-  // Remove a Pokémon from the team
   const removeFromTeam = (id) => {
     setTeam(team.filter((pokemon) => pokemon.id !== id));
   };
 
-  // Toggle shiny status for a Pokémon in the team
   const toggleShiny = (id, e) => {
-    e.stopPropagation(); // Prevent the modal from opening
+    e.stopPropagation();
     setTeam(
       team.map((pokemon) =>
         pokemon.id === id
@@ -87,9 +81,8 @@ function Pokemons() {
     );
   };
 
-  // Fetch random Pokémon info
   const fetchRandomPokemon = async () => {
-    const randomId = Math.floor(Math.random() * 898) + 1; // Assuming 898 total Pokémon
+    const randomId = Math.floor(Math.random() * 898) + 1;
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${randomId}`
     );
@@ -115,7 +108,6 @@ function Pokemons() {
     };
   };
 
-  // Usage in render
   const stats = calculateStats();
 
   return (
@@ -154,7 +146,7 @@ function Pokemons() {
 
       <h1>Gestiona tu equipo de Pokémon</h1>
 
-      {/* Search Box */}
+      {/* Caja Busqueda */}
       <input
         type="text"
         placeholder="Buscar Pokémon..."
@@ -163,7 +155,7 @@ function Pokemons() {
         style={searchStyle}
       />
 
-      {/* Search Results */}
+      {/* Busqueda */}
       <div style={resultsContainerStyle}>
         {filteredResults.map((pokemon) => (
           <div
@@ -177,8 +169,8 @@ function Pokemons() {
         ))}
       </div>
 
-      {/* Team Display */}
-      <h2>Tu equipo (máx. 6 Pokémon)</h2>
+      {/* Equipo */}
+      <h2>Tu equipo (máx. 10 Pokémon)</h2>
       <div style={teamContainerStyle}>
         {team.length === 0 ? (
           <p>No hay Pokémons en tu equipo</p>
@@ -201,7 +193,7 @@ function Pokemons() {
               </p>
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent the modal from opening when clicking "Eliminar"
+                  e.stopPropagation();
                   removeFromTeam(pokemon.id);
                 }}
                 style={buttonStyle}
