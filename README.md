@@ -7,10 +7,10 @@ Rafael Rivas
 Eduardo Tello
 
 Para correr:
-git clone repo
-cd mundo-web
-npm i
-npm start
+1. git clone repo
+2. cd mundo-web
+3. npm install
+4. npm start
 
 
 # Getting Started with Create React App
