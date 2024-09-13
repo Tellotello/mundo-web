@@ -144,7 +144,7 @@ function Pokemons() {
         )}
       </Modal>
 
-      <h1>Gestiona tu equipo de Pokémon</h1>
+      <h2 style={title}>Gestiona tu equipo de Pokémon</h2>
 
       {/* Caja Busqueda */}
       <input
@@ -249,11 +249,17 @@ const containerStyle = {
   padding: "20px",
 };
 
+const title = {
+  color: "#333", // Cambiado a un color más oscuro
+};
+
 const searchStyle = {
-  padding: "10px",
-  width: "250px",
-  fontSize: "16px",
-  margin: "20px 0",
+  padding: "12px", // Incrementado el padding
+  width: "300px",  // Ancho aumentado
+  fontSize: "18px", // Tamaño de fuente aumentado
+  margin: "25px 0", // Más espacio en los márgenes
+  border: "2px solid #007bff", // Añadido borde azul
+  borderRadius: "8px", // Bordes redondeados
 };
 
 const resultsContainerStyle = {
@@ -263,10 +269,11 @@ const resultsContainerStyle = {
 };
 
 const statsContainerStyle = {
-  margin: "20px 0",
-  padding: "10px",
-  border: "1px solid #007bff",
-  borderRadius: "8px",
+  margin: "25px 0", // Margen superior ajustado
+  padding: "15px", // Padding incrementado
+  border: "2px solid #007bff", // Borde más grueso
+  borderRadius: "12px", // Bordes redondeados
+  backgroundColor: "#f8f9fa", // Fondo claro
 };
 
 const modalStyle = {
@@ -282,11 +289,12 @@ const modalStyle = {
 };
 
 const resultCardStyle = {
-  border: "1px solid #ccc",
-  borderRadius: "8px",
-  padding: "10px",
-  margin: "10px",
+  border: "1px solid #007bff", // Borde azul
+  borderRadius: "10px", // Bordes más redondeados
+  padding: "12px", // Padding aumentado
+  margin: "12px", // Margen aumentado
   cursor: "pointer",
+  transition: "background-color 0.3s ease", // Transición suave para el hover
 };
 
 const teamContainerStyle = {
@@ -296,12 +304,13 @@ const teamContainerStyle = {
 };
 
 const teamCardStyle = {
-  border: "1px solid #ccc",
-  borderRadius: "8px",
-  padding: "10px",
-  margin: "10px",
+  border: "1px solid #007bff", // Borde azul
+  borderRadius: "10px", // Bordes más redondeados
+  padding: "12px", // Padding aumentado
+  margin: "12px", // Margen aumentado
   cursor: "pointer",
   position: "relative",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Sombra suave
 };
 
 const buttonStyle = {
@@ -311,7 +320,7 @@ const buttonStyle = {
 };
 
 const toggleContainerStyle = {
-  marginTop: "10px",
+  marginTop: "15px",
 };
 
 const randomPokemonStyle = {
