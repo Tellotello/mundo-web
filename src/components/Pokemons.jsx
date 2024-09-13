@@ -1,19 +1,38 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
-
+import pokeballImage from '../images/pokeball.jpg';
 function Pokemons() {
   const [search, setSearch] = useState("");
   const [pokemonList, setPokemonList] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
-  const [team, setTeam] = useState([]);
   const [randomPokemon, setRandomPokemon] = useState(null);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   // In your component
   const [generation, setGeneration] = useState(1);
-  const [legendaryList, setLegendaryList] = useState([]); // List of legendary Pokemon species
 
+  const [team, setTeam] = useState(() => {
+    const savedTeam = localStorage.getItem("pokemonTeam");
+      try {
+        const parsedTeam = JSON.parse(savedTeam);
+        if (Array.isArray(parsedTeam) && parsedTeam.length > 0) {
+          console.log("Team loaded from localStorage during initialization:", parsedTeam);
+          return parsedTeam;
+        }
+      } catch (e) {
+        console.error("Error parsing data from localStorage during initialization:", e);
+      }
+    return [];
+  });
+
+  const [legendaryList, setLegendaryList] = useState([]); // List of legendary Pokemon species
+  console.log("Current team state:", team);
+
+  useEffect(() => {
+    localStorage.setItem("pokemonTeam", JSON.stringify(team));
+  }, [team]);
+  
   // Function to fetch Pokémon by generation and generate a random team
   const generateRandomTeamFromGeneration = async (gen) => {
     try {
@@ -226,8 +245,12 @@ function Pokemons() {
           </div>
         )}
       </Modal>
-      <div>
-        <h3>Selecciona una generación</h3>
+      
+      <h2 style={title}>Gestiona tu equipo de Pokémon</h2>
+
+      
+        <h3 style={{color:"#fff", fontSize:"2rem",}}>Selecciona una generación</h3>
+        <div style={{display:"flex", justifyContent:"space-between", width:"30%"}}>
         <select onChange={(e) => setGeneration(e.target.value)}>
           {[...Array(9)].map((_, idx) => (
             <option key={idx} value={idx + 1}>
@@ -241,13 +264,13 @@ function Pokemons() {
         >
           Genera un equipo de la generación {generation}
         </button>
+        
       </div>
-
-      <button onClick={generateLegendaryTeam} style={buttonStyle}>
+      <button onClick={generateLegendaryTeam} style={{marginTop:"2rem", background:"linear-gradient(in hsl longer hue 45deg, red 0 0)", textShadow:"black 1px 1px 2px"}}>
         Genera un equipo de legendarios
       </button>
-      <h2 style={title}>Gestiona tu equipo de Pokémon</h2>
 
+      
       {/* Caja Busqueda */}
       <input
         type="text"
@@ -272,10 +295,10 @@ function Pokemons() {
       </div>
 
       {/* Equipo */}
-      <h2>Tu equipo (máx. 10 Pokémon)</h2>
+      <h2 style={{color:"#fff", marginBottom:"0"}}>Tu equipo (máx. 10 Pokémon)</h2>
       <div style={teamContainerStyle}>
         {team.length === 0 ? (
-          <p>No hay Pokémons en tu equipo</p>
+          <p style={{color:"#fff",}}>No hay Pokémons en tu equipo</p>
         ) : (
           team.map((pokemon) => (
             <div key={pokemon.id} style={teamCardStyle}>
@@ -288,8 +311,9 @@ function Pokemons() {
                 }
                 alt={pokemon.name}
                 onClick={() => openModal(pokemon)}
+                style={pokemonImage}
               />
-              <p>
+              <p style={tipostext}>
                 Tipos:{" "}
                 {pokemon.types.map((typeInfo) => typeInfo.type.name).join(", ")}
               </p>
@@ -298,9 +322,9 @@ function Pokemons() {
                   e.stopPropagation();
                   removeFromTeam(pokemon.id);
                 }}
-                style={buttonStyle}
+                style={deleteButtonStyle}
               >
-                Eliminar
+                x
               </button>
               <div style={toggleContainerStyle}>
                 <label>
@@ -331,12 +355,12 @@ function Pokemons() {
 
       {randomPokemon && (
         <div style={randomPokemonStyle}>
-          <h3>{randomPokemon.name}</h3>
+          <h3 style={{color:"#fff"}}>{randomPokemon.name}</h3>
           <img
             src={randomPokemon.sprites.front_default}
             alt={randomPokemon.name}
           />
-          <p>
+          <p style={{color:"#fff"}}>
             Peso: {randomPokemon.weight} | Altura: {randomPokemon.height}
           </p>
         </div>
@@ -348,11 +372,19 @@ function Pokemons() {
 // Inline styling
 const containerStyle = {
   textAlign: "center",
-  padding: "20px",
+  display: "flex",
+  flexFlow: "column",
+  background: `#525252`,
+  alignItems: "center",
+  background: `-webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)`,
+  background: `linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)`,
+  height:"100%",
+  minHeight: "96vh",
 };
 
 const title = {
-  color: "#333", // Cambiado a un color más oscuro
+  color: "#fff", // Cambiado a un color más oscuro
+  fontSize: "3rem", // Tamaño de fuente aumentado
 };
 
 const searchStyle = {
@@ -413,7 +445,46 @@ const teamCardStyle = {
   cursor: "pointer",
   position: "relative",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Sombra suave
+  backgroundImage: `url(${pokeballImage})`, // Imagen de fondo
+  backgroundSize: "cover", // Ajuste de la imagen
+  backgroundPosition: "center", // Ajuste de la imagen
+  color: "#fff", // Texto blanco
+  display: "flex",
+  flexFlow: "column",
+  maxHeight: "15rem", // Altura máxima
+  marginTop: "2rem", // Margen superior
 };
+
+const pokemonImage = {
+  width: "100px", // Ancho de la imagen
+  height: "100px", // Altura de la imagen
+  margin: "0 auto", // Centrar la imagen
+  display: "block", // Ajuste de bloque
+};
+
+const deleteButtonStyle = {
+  backgroundColor: "#dc3545", // Fondo rojo
+  color: "#fff", // Texto blanco
+  cursor: "pointer",
+  position: "relative",
+  width: "30px", // Ancho del botón
+  height: "30px", // Altura del botón
+  minHeight: "30px", // Altura mínima
+  textAlign: "center",
+  right: '-175px',
+  top: '-250px',
+  borderRadius: "100%",
+  padding:"0",
+  border: "none",
+};
+
+const tipostext = {
+  color: "#000",
+  fontWeight: "bold",
+  width: "60%",
+  alignSelf: "center",
+  minHeight: "2.5rem",
+}
 
 const buttonStyle = {
   backgroundColor: "#007bff",
@@ -422,7 +493,6 @@ const buttonStyle = {
 };
 
 const toggleContainerStyle = {
-  marginTop: "15px",
 };
 
 const randomPokemonStyle = {
