@@ -98,7 +98,7 @@ function Climate() {
 
   return (
     <div style={containerStyle}>
-      <h1>Página de Clima</h1>
+      <h2 style={titleStyle}>Página de Clima</h2>
 
       <input
         type="text"
@@ -111,9 +111,6 @@ function Climate() {
         <button onClick={fetchWeatherDataByCity} style={buttonStyle}>
           Buscar por Ciudad
         </button>
-      </div>
-
-      <div style={buttonContainerStyle}>
         <button onClick={getGeolocation} style={buttonStyle}>
           Obtener Ubicación Actual
         </button>
@@ -148,25 +145,45 @@ const containerStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  backgroundColor: "#f4f4f9",
+  padding: "20px",
+  borderRadius: "10px",
+  boxShadow: "0px 0px 15px rgba(0,0,0,0.1)",
+  maxWidth: "600px",
+  margin: "0 auto",
+};
+
+const titleStyle = {
+  color: "#007bff",
+  fontFamily: "Arial, sans-serif",
+  marginBottom: "20px",
 };
 
 const inputStyle = {
   padding: "10px",
   margin: "10px",
   fontSize: "16px",
+  border: "1px solid #ccc",
+  borderRadius: "5px",
+  width: "100%",
+  boxSizing: "border-box",
 };
 
 const buttonStyle = {
-  padding: "10px",
+  padding: "10px 20px",
   fontSize: "16px",
   backgroundColor: "#007bff",
   color: "#fff",
   border: "none",
   borderRadius: "5px",
   cursor: "pointer",
+  margin: "5px",
+  transition: "background-color 0.3s ease",
 };
 
 const buttonContainerStyle = {
+  display: "flex",
+  justifyContent: "center",
   marginBottom: "20px",
 };
 
@@ -176,23 +193,28 @@ const weatherListStyle = {
 };
 
 const weatherStyle = {
-  padding: "10px",
-  border: "1px solid #ccc",
+  padding: "15px",
+  border: "1px solid #007bff",
+  borderRadius: "10px",
+  backgroundColor: "#e9f1fe",
   marginBottom: "10px",
+  boxShadow: "0px 0px 10px rgba(0,0,0,0.05)",
 };
 
 const deleteButtonStyle = {
-  padding: "5px",
+  padding: "5px 10px",
   fontSize: "14px",
   backgroundColor: "#dc3545",
   color: "#fff",
   border: "none",
   borderRadius: "5px",
   cursor: "pointer",
+  marginTop: "10px",
 };
 
 const errorStyle = {
   color: "red",
+  fontSize: "14px",
   marginTop: "10px",
 };
 

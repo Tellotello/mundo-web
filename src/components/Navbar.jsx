@@ -29,7 +29,11 @@ function Navbar() {
 // Inline styling for navbar
 const navbarStyle = {
   backgroundColor: "#282c34",
-  padding: "10px",
+  innerPadding: "10px",
+  height:"4vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 const navListStyle = {
