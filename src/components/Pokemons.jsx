@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
-
+import pokeballImage from '../images/pokeball.jpg';
 function Pokemons() {
   const [search, setSearch] = useState("");
   const [pokemonList, setPokemonList] = useState([]);
@@ -243,10 +243,14 @@ function Pokemons() {
         </button>
       </div>
 
+<<<<<<< Updated upstream
       <button onClick={generateLegendaryTeam} style={buttonStyle}>
         Genera un equipo de legendarios
       </button>
       <h2 style={title}>Gestiona tu equipo de Pokémon</h2>
+=======
+      <h2 style={title}>Tu equipo de Pokémon</h2>
+>>>>>>> Stashed changes
 
       {/* Caja Busqueda */}
       <input
@@ -288,8 +292,9 @@ function Pokemons() {
                 }
                 alt={pokemon.name}
                 onClick={() => openModal(pokemon)}
+                style={pokemonImage}
               />
-              <p>
+              <p style={tipostext}>
                 Tipos:{" "}
                 {pokemon.types.map((typeInfo) => typeInfo.type.name).join(", ")}
               </p>
@@ -298,9 +303,9 @@ function Pokemons() {
                   e.stopPropagation();
                   removeFromTeam(pokemon.id);
                 }}
-                style={buttonStyle}
+                style={buttonStyle, deleteButtonStyle}
               >
-                Eliminar
+                x
               </button>
               <div style={toggleContainerStyle}>
                 <label>
@@ -348,11 +353,19 @@ function Pokemons() {
 // Inline styling
 const containerStyle = {
   textAlign: "center",
-  padding: "20px",
+  display: "flex",
+  flexFlow: "column",
+  background: `#525252`,
+  alignItems: "center",
+  background: `-webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)`,
+  background: `linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6)`,
+  height:"100%",
+  minHeight: "96vh",
 };
 
 const title = {
-  color: "#333", // Cambiado a un color más oscuro
+  color: "#fff", // Cambiado a un color más oscuro
+  fontSize: "3rem", // Tamaño de fuente aumentado
 };
 
 const searchStyle = {
@@ -413,7 +426,44 @@ const teamCardStyle = {
   cursor: "pointer",
   position: "relative",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Sombra suave
+  backgroundImage: `url(${pokeballImage})`, // Imagen de fondo
+  backgroundSize: "cover", // Ajuste de la imagen
+  backgroundPosition: "center", // Ajuste de la imagen
+  color: "#fff", // Texto blanco
+  display: "flex",
+  flexFlow: "column",
+  maxHeight: "15rem", // Altura máxima
 };
+
+const pokemonImage = {
+  width: "100px", // Ancho de la imagen
+  height: "100px", // Altura de la imagen
+  margin: "0 auto", // Centrar la imagen
+  display: "block", // Ajuste de bloque
+};
+
+const deleteButtonStyle = {
+  backgroundColor: "#dc3545", // Fondo rojo
+  color: "#fff", // Texto blanco
+  cursor: "pointer",
+  position: "relative",
+  width: "30px", // Ancho del botón
+  height: "30px", // Altura del botón
+  minHeight: "30px", // Altura mínima
+  textAlign: "center",
+  right: '-175px',
+  top: '-250px',
+  borderRadius: "100%",
+  padding:"0",
+  border: "none",
+};
+
+const tipostext = {
+  color: "#000",
+  fontWeight: "bold",
+  width: "50%",
+  alignSelf: "center",
+}
 
 const buttonStyle = {
   backgroundColor: "#007bff",
@@ -422,7 +472,6 @@ const buttonStyle = {
 };
 
 const toggleContainerStyle = {
-  marginTop: "15px",
 };
 
 const randomPokemonStyle = {

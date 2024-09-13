@@ -69,11 +69,17 @@ const contentStyle = {
   display: "flex",
   justifyContent: "space-between",
   background: `#525252`,
+<<<<<<< Updated upstream
   // eslint-disable-next-line
   background: `-webkit-linear-gradient(to right, #525252, #3d72b4)`,
   // eslint-disable-next-line
   background: `linear-gradient(to right, #525252, #3d72b4)`,
   height: "96vh",
+=======
+  background: `-webkit-linear-gradient(to right, #16bffd, #cb3066)`,
+  background: `linear-gradient(to right, #16bffd, #cb3066)`,
+  height:"96vh",
+>>>>>>> Stashed changes
 };
 
 const pokeball = {
@@ -88,6 +94,7 @@ const clima = {
 const leftColumnImage = {
   backgroundSize: "cover",
   backgroundImage: `url("https://wallpapercave.com/wp/wp5317305.png")`,
+  backgroundPosition: "center",
   width: "50%",
   height: "55rem",
   margin: "20px",
@@ -122,9 +129,13 @@ const rightColumn = {
   flexFlow: "column",
   alignItems: "center",
   textAlign: "center",
+<<<<<<< Updated upstream
   height: "60rem",
   borderRadius: "40px",
   backdropFilter: "blur(2px)",
+=======
+  height:"60rem",
+>>>>>>> Stashed changes
 };
 
 const buttonStyle = {
