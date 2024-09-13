@@ -69,11 +69,9 @@ const contentStyle = {
   display: "flex",
   justifyContent: "space-between",
   background: `#525252`,
-  // eslint-disable-next-line
-  background: `-webkit-linear-gradient(to right, #525252, #3d72b4)`,
-  // eslint-disable-next-line
-  background: `linear-gradient(to right, #525252, #3d72b4)`,
-  height: "96vh",
+  background: `-webkit-linear-gradient(to right, #16bffd, #cb3066)`,
+  background: `linear-gradient(to right, #16bffd, #cb3066)`,
+  height:"96vh",
 };
 
 const pokeball = {
@@ -88,8 +86,9 @@ const clima = {
 const leftColumnImage = {
   backgroundSize: "cover",
   backgroundImage: `url("https://wallpapercave.com/wp/wp5317305.png")`,
+  backgroundPosition: "center",
   width: "50%",
-  height: "55rem",
+  height: "90vh",
   margin: "20px",
   borderRadius: "40px",
   overflow: "hidden",
@@ -101,7 +100,7 @@ const leftColumn = {
   flexFlow: "column",
   alignItems: "center",
   textAlign: "center",
-  height: "60rem",
+  height: "96vh",
   borderRadius: "40px",
   backdropFilter: "blur(2px)",
 };
@@ -110,7 +109,7 @@ const rightColumnImage = {
   backgroundSize: "cover",
   backgroundImage: `url("https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max")`,
   width: "50%",
-  height: "55rem",
+  height: "90vh",
   margin: "20px",
   borderRadius: "40px",
   overflow: "hidden",
@@ -122,7 +121,7 @@ const rightColumn = {
   flexFlow: "column",
   alignItems: "center",
   textAlign: "center",
-  height: "60rem",
+  height: "96vh",
   borderRadius: "40px",
   backdropFilter: "blur(2px)",
 };
