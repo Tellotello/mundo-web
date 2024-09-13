@@ -4,13 +4,33 @@ import axios from "axios";
 import styles from './Climate.module.css';
 
 function Climate() {
-  const [weatherData, setWeatherData] = useState([]);
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
   const [city, setCity] = useState("");
   const [error, setError] = useState(null);
   const [currentLocation, setCurrentLocation] = useState({ lat: null, lon: null });
 
+  const [weatherData, setWeatherData] = useState(() => {
+    const savedWeatherData = localStorage.getItem("weatherData");
+    try {
+      const parsedData = JSON.parse(savedWeatherData);
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        console.log("Weather data loaded from localStorage during initialization:", parsedData);
+        return parsedData;
+      }
+    } catch (e) {
+      console.error("Error parsing data from localStorage during initialization:", e);
+    }
+    return [];
+  });
+  
+  console.log("Current weatherData state:", weatherData);
+  
+  useEffect(() => {
+    localStorage.setItem("weatherData", JSON.stringify(weatherData));
+  }, [weatherData]);
+  
+  
   const fetchWeatherDataByCoords = useCallback(async () => {
     try {
       const response = await axios.get(
@@ -80,7 +100,7 @@ function Climate() {
   };
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Radius of the Earth in km
+    const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -88,7 +108,7 @@ function Climate() {
       Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in km
+    return R * c;
   };
 
   useEffect(() => {
