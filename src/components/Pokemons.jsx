@@ -6,14 +6,39 @@ function Pokemons() {
   const [search, setSearch] = useState("");
   const [pokemonList, setPokemonList] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
-  const [team, setTeam] = useState([]);
   const [randomPokemon, setRandomPokemon] = useState(null);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   // In your component
   const [generation, setGeneration] = useState(1);
-  const [legendaryList, setLegendaryList] = useState([]); // List of legendary Pokemon species
 
+  const [team, setTeam] = useState(() => {
+    const savedTeam = localStorage.getItem("pokemonTeam");
+    if (savedTeam && savedTeam !== "undefined") {
+      try {
+        const parsedTeam = JSON.parse(savedTeam);
+        if (Array.isArray(parsedTeam) && parsedTeam.length > 0) {
+          console.log("Team loaded from localStorage during initialization:", parsedTeam);
+          return parsedTeam;
+        }
+      } catch (e) {
+        console.error("Error parsing data from localStorage during initialization:", e);
+      }
+    }
+    console.log("Initializing empty team");
+    return [];
+  });
+  
+  const [legendaryList, setLegendaryList] = useState([]); // List of legendary Pokemon species
+  console.log("Current team state:", team);
+
+
+
+  useEffect(() => {
+    console.log("Saving team to localStorage:", team);
+    localStorage.setItem("pokemonTeam", JSON.stringify(team));
+  }, [team]);
+  
   // Function to fetch Pokémon by generation and generate a random team
   const generateRandomTeamFromGeneration = async (gen) => {
     try {
