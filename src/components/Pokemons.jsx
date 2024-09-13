@@ -10,6 +10,39 @@ function Pokemons() {
   const [randomPokemon, setRandomPokemon] = useState(null);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  // In your component
+  const [generation, setGeneration] = useState(1);
+  const [legendaryList, setLegendaryList] = useState([]); // List of legendary Pokemon species
+
+  // Function to fetch Pokémon by generation and generate a random team
+  const generateRandomTeamFromGeneration = async (gen) => {
+    try {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/generation/${gen}`
+      );
+      const pokemons = response.data.pokemon_species;
+      const randomPokemons = [];
+
+      while (randomPokemons.length < 6) {
+        const randomPokemon =
+          pokemons[Math.floor(Math.random() * pokemons.length)];
+        const pokemonData = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${randomPokemon.name}`
+        );
+        if (!randomPokemons.find((p) => p.id === pokemonData.data.id)) {
+          randomPokemons.push(pokemonData.data);
+        }
+      }
+
+      setTeam(
+        randomPokemons.map((pokemon) => ({ ...pokemon, showShiny: false }))
+      );
+    } catch (error) {
+      console.error("Error fetching generation Pokémon", error);
+    }
+  };
+
+  // Add a dropdown for selecting the generation
 
   const openModal = (pokemon) => {
     setSelectedPokemon(pokemon);
@@ -19,6 +52,35 @@ function Pokemons() {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  useEffect(() => {
+    const fetchAllPokemonSpecies = async () => {
+      try {
+        const response = await axios.get(
+          "https://pokeapi.co/api/v2/pokemon-species?limit=1000"
+        );
+        setPokemonList(response.data.results);
+
+        // Fetch details for all species to find legendaries
+        const detailedPokemonList = await Promise.all(
+          response.data.results.map(async (pokemon) => {
+            const speciesResponse = await axios.get(pokemon.url);
+            return { ...speciesResponse.data, url: pokemon.url };
+          })
+        );
+
+        // Filter for legendaries
+        const legendaries = detailedPokemonList.filter(
+          (pokemon) => pokemon.is_legendary
+        );
+        setLegendaryList(legendaries);
+      } catch (error) {
+        console.error("Error fetching Pokémon species", error);
+      }
+    };
+
+    fetchAllPokemonSpecies();
+  }, []);
 
   useEffect(() => {
     const fetchPokemonList = async () => {
@@ -63,6 +125,27 @@ function Pokemons() {
       setTeam([...team, { ...pokemon, showShiny: false }]);
     } else {
       alert("Tu equipo solo puede tener 10 pokemones, y sin duplicados!");
+    }
+  };
+
+  // Function to generate a legendary team
+  const generateLegendaryTeam = async () => {
+    const randomLegendaries = [];
+    try {
+      while (randomLegendaries.length < 6) {
+        const randomPokemon =
+          legendaryList[Math.floor(Math.random() * legendaryList.length)];
+        const pokemonData = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${randomPokemon.name}`
+        );
+        randomLegendaries.push(pokemonData.data);
+      }
+
+      setTeam(
+        randomLegendaries.map((pokemon) => ({ ...pokemon, showShiny: false }))
+      );
+    } catch (error) {
+      console.error("Error fetching legendary Pokémon", error);
     }
   };
 
@@ -143,7 +226,26 @@ function Pokemons() {
           </div>
         )}
       </Modal>
+      <div>
+        <h3>Selecciona una generación</h3>
+        <select onChange={(e) => setGeneration(e.target.value)}>
+          {[...Array(9)].map((_, idx) => (
+            <option key={idx} value={idx + 1}>
+              Generation {idx + 1}
+            </option>
+          ))}
+        </select>
+        <button
+          onClick={() => generateRandomTeamFromGeneration(generation)}
+          style={buttonStyle}
+        >
+          Genera un equipo de la generación {generation}
+        </button>
+      </div>
 
+      <button onClick={generateLegendaryTeam} style={buttonStyle}>
+        Genera un equipo de legendarios
+      </button>
       <h2 style={title}>Gestiona tu equipo de Pokémon</h2>
 
       {/* Caja Busqueda */}
@@ -255,7 +357,7 @@ const title = {
 
 const searchStyle = {
   padding: "12px", // Incrementado el padding
-  width: "300px",  // Ancho aumentado
+  width: "300px", // Ancho aumentado
   fontSize: "18px", // Tamaño de fuente aumentado
   margin: "25px 0", // Más espacio en los márgenes
   border: "2px solid #007bff", // Añadido borde azul
