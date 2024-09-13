@@ -1,15 +1,36 @@
 // src/components/Climate.js
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import styles from './Climate.module.css';
 
 function Climate() {
-  const [weatherData, setWeatherData] = useState([]);
   const [lat, setLat] = useState("");
   const [lon, setLon] = useState("");
   const [city, setCity] = useState("");
   const [error, setError] = useState(null);
   const [currentLocation, setCurrentLocation] = useState({ lat: null, lon: null });
 
+  const [weatherData, setWeatherData] = useState(() => {
+    const savedWeatherData = localStorage.getItem("weatherData");
+    try {
+      const parsedData = JSON.parse(savedWeatherData);
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        console.log("Weather data loaded from localStorage during initialization:", parsedData);
+        return parsedData;
+      }
+    } catch (e) {
+      console.error("Error parsing data from localStorage during initialization:", e);
+    }
+    return [];
+  });
+  
+  console.log("Current weatherData state:", weatherData);
+  
+  useEffect(() => {
+    localStorage.setItem("weatherData", JSON.stringify(weatherData));
+  }, [weatherData]);
+  
+  
   const fetchWeatherDataByCoords = useCallback(async () => {
     try {
       const response = await axios.get(
@@ -79,7 +100,7 @@ function Climate() {
   };
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371; // Radius of the Earth in km
+    const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -87,7 +108,7 @@ function Climate() {
       Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in km
+    return R * c;
   };
 
   useEffect(() => {
@@ -97,30 +118,30 @@ function Climate() {
   }, [lat, lon, fetchWeatherDataByCoords]);
 
   return (
-    <div style={containerStyle}>
-      <h2 style={titleStyle}>Página de Clima</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Página de Clima</h2>
 
       <input
         type="text"
         placeholder="Buscar ciudad"
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        style={inputStyle}
+        className={styles.input}
       />
-      <div style={buttonContainerStyle}>
-        <button onClick={fetchWeatherDataByCity} style={buttonStyle}>
+      <div className={styles.buttonContainer}>
+        <button onClick={fetchWeatherDataByCity} className={styles.button}>
           Buscar por Ciudad
         </button>
-        <button onClick={getGeolocation} style={buttonStyle}>
+        <button onClick={getGeolocation} className={styles.button}>
           Obtener Ubicación Actual
         </button>
       </div>
 
-      {error && <p style={errorStyle}>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
 
-      <div style={weatherListStyle}>
+      <div className={styles.weatherList}>
         {weatherData.map((weather) => (
-          <div key={weather.id} style={weatherStyle}>
+          <div key={weather.id} className={styles.weather}>
             <h2>{weather.location}</h2>
             <p>Temperatura: {weather.temperature} °C</p>
             <p>Descripción: {weather.description}</p>
@@ -129,7 +150,7 @@ function Climate() {
                 Distancia desde tu ubicación: {calculateDistance(currentLocation.lat, currentLocation.lon, weather.lat, weather.lon).toFixed(2)} km
               </p>
             )}
-            <button onClick={() => handleDelete(weather.id)} style={deleteButtonStyle}>
+            <button onClick={() => handleDelete(weather.id)} className={styles.deleteButton}>
               Eliminar
             </button>
           </div>
@@ -138,84 +159,5 @@ function Climate() {
     </div>
   );
 }
-
-const containerStyle = {
-  textAlign: "center",
-  marginTop: "50px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  backgroundColor: "#f4f4f9",
-  padding: "20px",
-  borderRadius: "10px",
-  boxShadow: "0px 0px 15px rgba(0,0,0,0.1)",
-  maxWidth: "600px",
-  margin: "0 auto",
-};
-
-const titleStyle = {
-  color: "#007bff",
-  fontFamily: "Arial, sans-serif",
-  marginBottom: "20px",
-};
-
-const inputStyle = {
-  padding: "10px",
-  margin: "10px",
-  fontSize: "16px",
-  border: "1px solid #ccc",
-  borderRadius: "5px",
-  width: "100%",
-  boxSizing: "border-box",
-};
-
-const buttonStyle = {
-  padding: "10px 20px",
-  fontSize: "16px",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-  margin: "5px",
-  transition: "background-color 0.3s ease",
-};
-
-const buttonContainerStyle = {
-  display: "flex",
-  justifyContent: "center",
-  marginBottom: "20px",
-};
-
-const weatherListStyle = {
-  marginTop: "20px",
-  width: "100%",
-};
-
-const weatherStyle = {
-  padding: "15px",
-  border: "1px solid #007bff",
-  borderRadius: "10px",
-  backgroundColor: "#e9f1fe",
-  marginBottom: "10px",
-  boxShadow: "0px 0px 10px rgba(0,0,0,0.05)",
-};
-
-const deleteButtonStyle = {
-  padding: "5px 10px",
-  fontSize: "14px",
-  backgroundColor: "#dc3545",
-  color: "#fff",
-  border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
-  marginTop: "10px",
-};
-
-const errorStyle = {
-  color: "red",
-  fontSize: "14px",
-  marginTop: "10px",
-};
 
 export default Climate;
