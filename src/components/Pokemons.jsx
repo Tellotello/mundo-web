@@ -226,8 +226,12 @@ function Pokemons() {
           </div>
         )}
       </Modal>
-      <div>
-        <h3>Selecciona una generación</h3>
+      
+      <h2 style={title}>Gestiona tu equipo de Pokémon</h2>
+
+      
+        <h3 style={{color:"#fff", fontSize:"2rem",}}>Selecciona una generación</h3>
+        <div style={{display:"flex", justifyContent:"space-between", width:"30%"}}>
         <select onChange={(e) => setGeneration(e.target.value)}>
           {[...Array(9)].map((_, idx) => (
             <option key={idx} value={idx + 1}>
@@ -241,17 +245,13 @@ function Pokemons() {
         >
           Genera un equipo de la generación {generation}
         </button>
+        
       </div>
-
-<<<<<<< Updated upstream
-      <button onClick={generateLegendaryTeam} style={buttonStyle}>
+      <button onClick={generateLegendaryTeam} style={{marginTop:"2rem"}}>
         Genera un equipo de legendarios
       </button>
-      <h2 style={title}>Gestiona tu equipo de Pokémon</h2>
-=======
-      <h2 style={title}>Tu equipo de Pokémon</h2>
->>>>>>> Stashed changes
 
+      
       {/* Caja Busqueda */}
       <input
         type="text"
@@ -276,10 +276,10 @@ function Pokemons() {
       </div>
 
       {/* Equipo */}
-      <h2>Tu equipo (máx. 10 Pokémon)</h2>
+      <h2 style={{color:"#fff", marginBottom:"0"}}>Tu equipo (máx. 10 Pokémon)</h2>
       <div style={teamContainerStyle}>
         {team.length === 0 ? (
-          <p>No hay Pokémons en tu equipo</p>
+          <p style={{color:"#fff",}}>No hay Pokémons en tu equipo</p>
         ) : (
           team.map((pokemon) => (
             <div key={pokemon.id} style={teamCardStyle}>
@@ -303,7 +303,7 @@ function Pokemons() {
                   e.stopPropagation();
                   removeFromTeam(pokemon.id);
                 }}
-                style={buttonStyle, deleteButtonStyle}
+                style={deleteButtonStyle}
               >
                 x
               </button>
@@ -336,12 +336,12 @@ function Pokemons() {
 
       {randomPokemon && (
         <div style={randomPokemonStyle}>
-          <h3>{randomPokemon.name}</h3>
+          <h3 style={{color:"#fff"}}>{randomPokemon.name}</h3>
           <img
             src={randomPokemon.sprites.front_default}
             alt={randomPokemon.name}
           />
-          <p>
+          <p style={{color:"#fff"}}>
             Peso: {randomPokemon.weight} | Altura: {randomPokemon.height}
           </p>
         </div>
@@ -433,6 +433,7 @@ const teamCardStyle = {
   display: "flex",
   flexFlow: "column",
   maxHeight: "15rem", // Altura máxima
+  marginTop: "2rem", // Margen superior
 };
 
 const pokemonImage = {
@@ -461,8 +462,9 @@ const deleteButtonStyle = {
 const tipostext = {
   color: "#000",
   fontWeight: "bold",
-  width: "50%",
+  width: "60%",
   alignSelf: "center",
+  minHeight: "2.5rem",
 }
 
 const buttonStyle = {
