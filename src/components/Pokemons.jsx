@@ -247,7 +247,7 @@ function Pokemons() {
         </button>
         
       </div>
-      <button onClick={generateLegendaryTeam} style={{marginTop:"2rem"}}>
+      <button onClick={generateLegendaryTeam} style={{marginTop:"2rem", background:"linear-gradient(in hsl longer hue 45deg, red 0 0)", textShadow:"black 1px 1px 2px"}}>
         Genera un equipo de legendarios
       </button>
 
