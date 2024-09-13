@@ -69,9 +69,11 @@ const contentStyle = {
   display: "flex",
   justifyContent: "space-between",
   background: `#525252`,
+  // eslint-disable-next-line
   background: `-webkit-linear-gradient(to right, #16bffd, #cb3066)`,
+  // eslint-disable-next-line
   background: `linear-gradient(to right, #16bffd, #cb3066)`,
-  height:"96vh",
+  height: "96vh",
 };
 
 const pokeball = {
