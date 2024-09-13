@@ -305,10 +305,6 @@ const teamCardStyle = {
 };
 
 const buttonStyle = {
-  margin: "10px",
-  padding: "5px 10px",
-  border: "none",
-  borderRadius: "5px",
   backgroundColor: "#007bff",
   color: "#fff",
   cursor: "pointer",
