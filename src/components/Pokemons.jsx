@@ -14,7 +14,6 @@ function Pokemons() {
 
   const [team, setTeam] = useState(() => {
     const savedTeam = localStorage.getItem("pokemonTeam");
-    if (savedTeam && savedTeam !== "undefined") {
       try {
         const parsedTeam = JSON.parse(savedTeam);
         if (Array.isArray(parsedTeam) && parsedTeam.length > 0) {
@@ -24,18 +23,13 @@ function Pokemons() {
       } catch (e) {
         console.error("Error parsing data from localStorage during initialization:", e);
       }
-    }
-    console.log("Initializing empty team");
     return [];
   });
-  
+
   const [legendaryList, setLegendaryList] = useState([]); // List of legendary Pokemon species
   console.log("Current team state:", team);
 
-
-
   useEffect(() => {
-    console.log("Saving team to localStorage:", team);
     localStorage.setItem("pokemonTeam", JSON.stringify(team));
   }, [team]);
   
