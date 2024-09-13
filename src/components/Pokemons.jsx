@@ -9,7 +9,7 @@ function Pokemons() {
   const [randomPokemon, setRandomPokemon] = useState(null);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  // In your component
+  // trigger
   const [generation, setGeneration] = useState(1);
 
   const [team, setTeam] = useState(() => {
